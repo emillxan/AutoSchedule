@@ -3,66 +3,66 @@ using AutoSchedule.Domain.Entities;
 using AutoSchedule.Domain.Enums;
 using AutoSchedule.Domain.Responce;
 
-namespace AutoSchedule.BLL.CRUD.Cabinets;
+namespace AutoSchedule.BLL.CRUD.Teachers;
 
-public class SquadService(IBaseRepository<Squad> squadRepository) : IBaseService<Squad>
+public class TeacherService(IBaseRepository<Teacher> cabinetRepository) : IBaseService<Teacher>
 {
-    private readonly IBaseRepository<Squad> _squadRepository = squadRepository;
+    private readonly IBaseRepository<Teacher> _cabinetRepository = cabinetRepository;
 
-    public IBaseResponse<List<Squad>> GetAll()
+    public IBaseResponse<List<Teacher>> GetAll()
     {
         try
         {
-            var squads = _squadRepository.GetAll().ToList();
+            var cabines = _cabinetRepository.GetAll().ToList();
 
-            if (!squads.Any())
+            if (!cabines.Any())
             {
-                return new BaseResponse<List<Squad>>()
+                return new BaseResponse<List<Teacher>>()
                 {
                     Description = "Найдено 0 элементов",
                     StatusCode = StatusCode.OK
                 };
             }
 
-            return new BaseResponse<List<Squad>>()
+            return new BaseResponse<List<Teacher>>()
             {
-                Data = squads,
+                Data = cabines,
                 StatusCode = StatusCode.OK
             };
         }
         catch (Exception ex)
         {
-            return new BaseResponse<List<Squad>>()
+            return new BaseResponse<List<Teacher>>()
             {
                 Description = $"[GetCars] : {ex.Message}",
             };
         }
     }
 
-    public async Task<IBaseResponse<Squad>> GetById(int id)
+    public async Task<IBaseResponse<Teacher>> GetById(int id)
     {
         try
         {
-            var squad = _squadRepository.GetAll().FirstOrDefault(x => x.Id == id);
+            var cabines = _cabinetRepository.GetAll().FirstOrDefault(x => x.Id == id);
 
-            if (squad == null)
+            if (cabines == null)
             {
-                return new BaseResponse<Squad>()
+                return new BaseResponse<Teacher>()
                 {
                     Description = "Найдено 0 элементов",
                     StatusCode = StatusCode.OK
                 };
             }
 
-            return new BaseResponse<Squad>()
+            return new BaseResponse<Teacher>()
             {
-                Data = squad,
+                Data = cabines,
                 StatusCode = StatusCode.OK
             };
         }
         catch (Exception ex)
         {
-            return new BaseResponse<Squad>()
+            return new BaseResponse<Teacher>()
             {
                 Description = $"[GetCars] : {ex.Message}",
             };

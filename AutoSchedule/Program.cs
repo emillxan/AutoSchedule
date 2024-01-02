@@ -1,6 +1,9 @@
 using AutoSchedule.BLL.CRUD;
 using AutoSchedule.BLL.CRUD.Cabinets;
+using AutoSchedule.BLL.CRUD.Slots;
 using AutoSchedule.BLL.CRUD.Subjects;
+using AutoSchedule.BLL.CRUD.Teachers;
+using AutoSchedule.BLL.Logic;
 using AutoSchedule.DAL;
 using AutoSchedule.DAL.Interface;
 using AutoSchedule.DAL.Repositories;
@@ -18,17 +21,26 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 
+
 builder.Services.AddScoped<IBaseRepository<Squad>, SquadRepository>();
 builder.Services.AddScoped<IBaseRepository<Cabinet>, CabinetRepository>();
 builder.Services.AddScoped<IBaseRepository<Subject>, SubjectRepository>();
+builder.Services.AddScoped<IBaseRepository<Teacher>, TeacherRepository>();
+builder.Services.AddScoped<IBaseRepository<Lesson>, LessonRepository>();
 
 
 builder.Services.AddScoped<IBaseService<Squad>, SquadService>();
-builder.Services.AddScoped<IBaseService<Cabinet>, CabinetService>();
 builder.Services.AddScoped<IBaseService<Subject>, SubjectService>();
+builder.Services.AddScoped<IBaseService<Teacher>, TeacherService>();
+builder.Services.AddScoped<IBaseService<Cabinet>, CabinetService>();
+builder.Services.AddScoped<ILessonService, LessonService>();
 
 
 
+builder.Services.AddScoped<IPriority, Priority>();
+
+
+builder.Services.AddCors();
 
 var app = builder.Build();
 
@@ -40,6 +52,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:3000"));
+
 
 app.UseAuthorization();
 

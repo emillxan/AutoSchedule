@@ -38,4 +38,34 @@ public class SubjectService(IBaseRepository<Subject> cabinetRepository) : IBaseS
             };
         }
     }
+
+    public async Task<IBaseResponse<Subject>> GetById(int id)
+    {
+        try
+        {
+            var cabines = _cabinetRepository.GetAll().FirstOrDefault(x => x.Id == id);
+
+            if (cabines == null)
+            {
+                return new BaseResponse<Subject>()
+                {
+                    Description = "Найдено 0 элементов",
+                    StatusCode = StatusCode.OK
+                };
+            }
+
+            return new BaseResponse<Subject>()
+            {
+                Data = cabines,
+                StatusCode = StatusCode.OK
+            };
+        }
+        catch (Exception ex)
+        {
+            return new BaseResponse<Subject>()
+            {
+                Description = $"[GetCars] : {ex.Message}",
+            };
+        }
+    }
 }
