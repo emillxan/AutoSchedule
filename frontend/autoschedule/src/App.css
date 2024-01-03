@@ -36,3 +36,18 @@
     transform: rotate(360deg);
   }
 }
+
+
+*{
+  margin: 0;
+  padding: 0;
+}
+
+.lesson-slot{
+  display: flex;
+  flex-direction: column;
+  gap: .25rem;
+  border: 1px white solid;
+  width: 260px;
+  padding: 10px;
+}

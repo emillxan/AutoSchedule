@@ -1,4 +1,5 @@
 ﻿using AutoSchedule.DAL.Interface;
+using AutoSchedule.Domain.DTOs;
 using AutoSchedule.Domain.Entities;
 
 namespace AutoSchedule.DAL.Repositories;

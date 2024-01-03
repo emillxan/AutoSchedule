@@ -1,4 +1,5 @@
 ﻿using AutoSchedule.DAL.Interface;
+using AutoSchedule.Domain.DTOs;
 using AutoSchedule.Domain.Entities;
 using AutoSchedule.Domain.Enums;
 using AutoSchedule.Domain.Responce;
@@ -15,10 +16,10 @@ public class LessonService(IBaseRepository<Lesson> subjectRepository) : ILessonS
         {
             var slot = new Lesson()
             {
-                Squad = model.Squad,
-                Cabinet = model.Cabinet,
-                Subject = model.Subject,
-                Teacher = model.Teacher,
+                SquadId = model.SquadId,
+                CabinetId = model.CabinetId,
+                SubjectId = model.SubjectId,
+                TeacherId = model.TeacherId,
                 Time = model.Time,
             };
             await _subjectRepository.Create(slot);

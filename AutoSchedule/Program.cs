@@ -7,6 +7,7 @@ using AutoSchedule.BLL.Logic;
 using AutoSchedule.DAL;
 using AutoSchedule.DAL.Interface;
 using AutoSchedule.DAL.Repositories;
+using AutoSchedule.Domain.DTOs;
 using AutoSchedule.Domain.Entities;
 using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.EntityFrameworkCore;
@@ -37,7 +38,7 @@ builder.Services.AddScoped<ILessonService, LessonService>();
 
 
 
-builder.Services.AddScoped<IPriority, Priority>();
+builder.Services.AddScoped<IScheduleBuilder, ScheduleBuilder>();
 
 
 builder.Services.AddCors();

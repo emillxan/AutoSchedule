@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 using System.Data;
+using AutoSchedule.Domain.DTOs;
 
 namespace AutoSchedule.DAL;
 
@@ -66,22 +67,22 @@ public class AppDbContext : DbContext
             builder.ToTable("Subject").HasKey(x => x.Id);
 
             builder.HasData([
-                new Subject { Id = 1, Name = "OOP", },
-                new Subject { Id = 2, Name = "English",  },
-                new Subject { Id = 3, Name = "WEB",  },
-                new Subject { Id = 4, Name = "Economy",  },
-                new Subject { Id = 5, Name = "ASKP", },
-                new Subject { Id = 6, Name = "Fizik", },
-                new Subject { Id = 7, Name = "E-Comers", },
-                new Subject { Id = 8, Name = "Phylosofi", },
-                new Subject { Id = 9, Name = "C#", },
-                new Subject { Id = 10, Name = "KiberSecurity", },
-                new Subject { Id = 11, Name = "C++", },
-                new Subject { Id = 12, Name = "Python", },
-                new Subject { Id = 13, Name = "Math", },
-                new Subject { Id = 14, Name = "Chemistry", },
-                new Subject { Id = 15, Name = "DB", },
-                new Subject { Id = 16, Name = "An Math", },
+                new Subject { Id = 1, Name = "OOP", WeeklyFrequency = 3},
+                new Subject { Id = 2, Name = "English", WeeklyFrequency = 2 },
+                new Subject { Id = 3, Name = "WEB", WeeklyFrequency = 1 },
+                new Subject { Id = 4, Name = "Economy", WeeklyFrequency = 2 },
+                new Subject { Id = 5, Name = "ASKP", WeeklyFrequency = 3 },
+                new Subject { Id = 6, Name = "Fizik", WeeklyFrequency = 2 },
+                new Subject { Id = 7, Name = "E-Comers", WeeklyFrequency = 1 },
+                new Subject { Id = 8, Name = "Phylosofi", WeeklyFrequency = 2 },
+                new Subject { Id = 9, Name = "C#", WeeklyFrequency = 1 },
+                new Subject { Id = 10, Name = "KiberSecurity", WeeklyFrequency = 2 },
+                new Subject { Id = 11, Name = "C++", WeeklyFrequency = 1 },
+                new Subject { Id = 12, Name = "Python", WeeklyFrequency = 2 },
+                new Subject { Id = 13, Name = "Math", WeeklyFrequency = 1 },
+                new Subject { Id = 14, Name = "Chemistry", WeeklyFrequency = 2 },
+                new Subject { Id = 15, Name = "DB", WeeklyFrequency = 3 },
+                new Subject { Id = 16, Name = "An Math", WeeklyFrequency = 3 },
             ]);
 
             builder.Property(x => x.Id).ValueGeneratedOnAdd();
@@ -103,8 +104,5 @@ public class AppDbContext : DbContext
 
             builder.Property(x => x.Id).ValueGeneratedOnAdd();
         });
-
-
-      
     }
 }

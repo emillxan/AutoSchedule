@@ -5,9 +5,9 @@ namespace AutoSchedule.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class WeatherForecastController(IPriority priority) : ControllerBase
+    public class WeatherForecastController(IScheduleBuilder priority) : ControllerBase
     {
-        private readonly IPriority _priority = priority;
+        private readonly IScheduleBuilder _priority = priority;
         private static readonly string[] Summaries = new[]
         {
             "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
