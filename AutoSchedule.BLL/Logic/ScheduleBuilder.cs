@@ -41,6 +41,19 @@ public class ScheduleBuilder(IBaseService<Cabinet> cabinetRepository,
         GetStartList();
 
         var result = GenerateWeeklySchedule().Lessons;
+
+        foreach (var lesson in result)
+        {
+            _lessonService.Create(new Lesson
+            {
+                CabinetId = lesson.Cabinet.Id,
+                SquadId = lesson.Squad.Id,
+                TeacherId = lesson.Teacher.Id,
+                SubjectId = lesson.Subject.Id,
+                Time = lesson.Time,
+                DayOfWeek = lesson.DayOfWeek,
+            });
+        }
         return result;
 
         /*var result = _lessonService.GetAll().Data;
@@ -57,7 +70,8 @@ public class ScheduleBuilder(IBaseService<Cabinet> cabinetRepository,
     public Schedule GenerateWeeklySchedule()
     {
         var schedule = new Schedule();
-        Dictionary<int, int> subjectWeeklyCount = new Dictionary<int, int>();
+        DateTime startOfWeek = GetMondayOfCurrentWeek();
+        Dictionary<int, int> subjectWeeklyCount = new Dictionary<int, int>(); // Счетчик уроков по предметам
 
         foreach (var squad in squads)
         {
@@ -65,8 +79,8 @@ public class ScheduleBuilder(IBaseService<Cabinet> cabinetRepository,
 
             for (int day = 0; day < 5; day++) // Пять учебных дней
             {
-                int lessonCount = 0;
-                DateTime currentDate = DateTime.Now.AddDays(day); // Дата для текущего учебного дня
+                DateTime currentDate = startOfWeek.AddDays(day);
+                DayOfWeek currentDayOfWeek = currentDate.DayOfWeek;
 
                 foreach (var subjectId in squad.SubjectIds)
                 {
@@ -78,12 +92,13 @@ public class ScheduleBuilder(IBaseService<Cabinet> cabinetRepository,
                     var subject = subjects.FirstOrDefault(s => s.Id == subjectId);
                     if (subject == null || subjectWeeklyCount[subjectId] >= subject.WeeklyFrequency)
                     {
-                        continue; // Переходим к следующему предмету, если текущий уже достиг своей недельной частоты
+                        continue;
                     }
 
+                    int lessonCount = 0;
                     while (lessonCount < ScheduleConstants.MaxLessonsPerDay)
                     {
-                        var lessonTime = CalculateLessonTime(lessonCount, currentDate); // Расчет времени начала пары
+                        var lessonTime = CalculateLessonTime(lessonCount, currentDate);
                         var availableCabinet = FindAvailableCabinet(cabinets, lessonTime, schedule);
                         var availableTeacher = FindAvailableTeacher(teachers, subject, lessonTime, schedule);
 
@@ -95,17 +110,17 @@ public class ScheduleBuilder(IBaseService<Cabinet> cabinetRepository,
                                 Teacher = availableTeacher,
                                 Cabinet = availableCabinet,
                                 Squad = squad,
-                                Time = lessonTime
+                                Time = lessonTime,
+                                DayOfWeek = currentDayOfWeek
                             };
 
                             if (schedule.AddLesson(lesson))
                             {
-                                subjectWeeklyCount[subjectId]++; // Увеличиваем счетчик проведенных уроков по предмету
-                                lessonCount++;
-                                break; // Урок запланирован, переходим к следующему предмету
+                                subjectWeeklyCount[subjectId]++;
+                                break; // Урок добавлен, переходим к следующему предмету
                             }
                         }
-                        lessonCount++; // Переход к следующему временному слоту
+                        lessonCount++;
                     }
                 }
             }
@@ -114,6 +129,18 @@ public class ScheduleBuilder(IBaseService<Cabinet> cabinetRepository,
         return schedule;
     }
 
+
+    public static DateTime GetMondayOfCurrentWeek()
+    {
+        DateTime today = DateTime.Today;
+        int daysSinceMonday = (int)today.DayOfWeek - (int)DayOfWeek.Monday;
+        // Если сегодня до понедельника, отнимаем ещё 7 дней
+        if (daysSinceMonday < 0)
+        {
+            daysSinceMonday += 7;
+        }
+        return today.AddDays(-daysSinceMonday);
+    }
 
     public Cabinet FindAvailableCabinet(List<Cabinet> cabinets, DateTime lessonTime, Schedule schedule)
     {

@@ -1,30 +1,37 @@
-import logo from './logo.svg';
 import './App.css';
-import axios from 'axios';
-import { useEffect, useState } from 'react';
-import Schedule from './component/Schedule';
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
+import Cabinets from './views/Cabinets';
+import Squads from './views/Squads';
+import Teachers from './views/Teachers';
+import Subjects from './views/Subjects';
+import Lessons from './views/Lessons';
+
 
 function App() {
-  const [tasks, setTasks] = useState([]);
-    
-  useEffect(() => {
-    axios.get(`https://localhost:7168/WeatherForecast`)
-      .then(res => {
-        // console.log(res.data);
-        setTasks(res.data);
-      })
-      .catch(error => {
-        console.error('Error fetching data:', error);
-      });
-  }, []); 
-
-
   return (
-    <div className="App">
-      <header className="App-header">
-       <Schedule></Schedule>
-      </header>
-    </div>
+    <Router>
+      <div>
+        <nav>
+          <ul>
+            <li><Link to="/cabinets">Кабинеты</Link></li>
+            <li><Link to="/squads">Группы</Link></li>
+            <li><Link to="/teachers">Учителя</Link></li>
+            <li><Link to="/subjects">Предметы</Link></li>
+            <li><Link to="/lessons">Уроки</Link></li>
+          </ul>
+        </nav>
+
+        <Routes className="container">
+          <Route path="/cabinets" element={<Cabinets />} />
+          <Route path="/squads" element={<Squads />} />
+          <Route path="/teachers" element={<Teachers />} />
+          <Route path="/subjects" element={<Subjects />} />
+          <Route path="/lessons" element={<Lessons />} />
+          <Route path="/" element={<div>Добро пожаловать в приложение AutoSchedule</div>} />
+        </Routes>
+      </div>
+    </Router>
   );
 }
 

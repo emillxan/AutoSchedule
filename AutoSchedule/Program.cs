@@ -1,8 +1,10 @@
 using AutoSchedule.BLL.CRUD;
 using AutoSchedule.BLL.CRUD.Cabinets;
 using AutoSchedule.BLL.CRUD.Slots;
+using AutoSchedule.BLL.CRUD.Squads;
 using AutoSchedule.BLL.CRUD.Subjects;
 using AutoSchedule.BLL.CRUD.Teachers;
+using AutoSchedule.BLL.DTOs.Lessons;
 using AutoSchedule.BLL.Logic;
 using AutoSchedule.DAL;
 using AutoSchedule.DAL.Interface;
@@ -31,11 +33,15 @@ builder.Services.AddScoped<IBaseRepository<Lesson>, LessonRepository>();
 
 
 builder.Services.AddScoped<IBaseService<Squad>, SquadService>();
+builder.Services.AddScoped<ISquadService, SquadService>();
 builder.Services.AddScoped<IBaseService<Subject>, SubjectService>();
+builder.Services.AddScoped<ISubjectService, SubjectService>();
 builder.Services.AddScoped<IBaseService<Teacher>, TeacherService>();
+builder.Services.AddScoped<ITeacherService, TeacherService>();
 builder.Services.AddScoped<IBaseService<Cabinet>, CabinetService>();
+builder.Services.AddScoped<ICabinetService, CabinetService>();
 builder.Services.AddScoped<ILessonService, LessonService>();
-
+builder.Services.AddScoped<ILessonDTOService, LessonDTOService>();
 
 
 builder.Services.AddScoped<IScheduleBuilder, ScheduleBuilder>();

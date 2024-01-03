@@ -10,4 +10,5 @@ public class LessonDTO
     public Cabinet Cabinet { get; set; }
     public Teacher Teacher { get; set; }
     public DateTime Time { get; set; }
+    public DayOfWeek DayOfWeek { get; set; }
 }

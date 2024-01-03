@@ -7,5 +7,6 @@ public class Lesson
     public int SubjectId { get; set; }
     public int CabinetId { get; set; }
     public int TeacherId { get; set; }
-    public DateTime Time { get; set; } 
+    public DateTime Time { get; set; }
+    public DayOfWeek DayOfWeek { get; set; }
 }

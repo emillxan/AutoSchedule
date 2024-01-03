@@ -1,21 +1,50 @@
 ﻿using AutoSchedule.DAL.Interface;
+using AutoSchedule.DAL.Repositories;
+using AutoSchedule.Domain.DTOs.Cabinets;
 using AutoSchedule.Domain.Entities;
 using AutoSchedule.Domain.Enums;
 using AutoSchedule.Domain.Responce;
+using Microsoft.EntityFrameworkCore;
 
 namespace AutoSchedule.BLL.CRUD.Cabinets;
 
-public class CabinetService(IBaseRepository<Cabinet> subjectRepository) : IBaseService<Cabinet>
+public class CabinetService(IBaseRepository<Cabinet> cabinetRepository) : ICabinetService
 {
-    private readonly IBaseRepository<Cabinet> _subjectRepository = subjectRepository;
+    private readonly IBaseRepository<Cabinet> _cabinetRepository = cabinetRepository;
+
+
+    public async Task<IBaseResponse<Cabinet>> Create(CreateCabinetDTO model)
+    {
+        try
+        {
+            var cabinet = new Cabinet()
+            {
+                Number = model.Number,
+            };
+            await _cabinetRepository.Create(cabinet);
+
+            return new BaseResponse<Cabinet>()
+            {
+                StatusCode = StatusCode.OK,
+                Data = cabinet
+            };
+        }
+        catch (Exception ex)
+        {
+            return new BaseResponse<Cabinet>()
+            {
+                Description = $"[Create] : {ex.Message}",
+            };
+        }
+    }
 
     public IBaseResponse<List<Cabinet>> GetAll()
     {
         try
         {
-            var subjects = _subjectRepository.GetAll().ToList();
+            var cabinets = _cabinetRepository.GetAll().ToList();
 
-            if (!subjects.Any())
+            if (!cabinets.Any())
             {
                 return new BaseResponse<List<Cabinet>>()
                 {
@@ -26,7 +55,7 @@ public class CabinetService(IBaseRepository<Cabinet> subjectRepository) : IBaseS
 
             return new BaseResponse<List<Cabinet>>()
             {
-                Data = subjects,
+                Data = cabinets,
                 StatusCode = StatusCode.OK
             };
         }
@@ -34,7 +63,7 @@ public class CabinetService(IBaseRepository<Cabinet> subjectRepository) : IBaseS
         {
             return new BaseResponse<List<Cabinet>>()
             {
-                Description = $"[GetCars] : {ex.Message}",
+                Description = $"[GetAll] : {ex.Message}",
             };
         }
     }
@@ -43,9 +72,9 @@ public class CabinetService(IBaseRepository<Cabinet> subjectRepository) : IBaseS
     {
         try
         {
-            var subjects = _subjectRepository.GetAll().FirstOrDefault(x => x.Id == id);
+            var cabinet = _cabinetRepository.GetAll().FirstOrDefault(x => x.Id == id);
 
-            if (subjects == null)
+            if (cabinet == null)
             {
                 return new BaseResponse<Cabinet>()
                 {
@@ -56,7 +85,7 @@ public class CabinetService(IBaseRepository<Cabinet> subjectRepository) : IBaseS
 
             return new BaseResponse<Cabinet>()
             {
-                Data = subjects,
+                Data = cabinet,
                 StatusCode = StatusCode.OK
             };
         }
@@ -64,7 +93,70 @@ public class CabinetService(IBaseRepository<Cabinet> subjectRepository) : IBaseS
         {
             return new BaseResponse<Cabinet>()
             {
-                Description = $"[GetCars] : {ex.Message}",
+                Description = $"[GetById] : {ex.Message}",
+            };
+        }
+    }
+
+    public async Task<IBaseResponse<Cabinet>> Edit(Cabinet model)
+    {
+        try
+        {
+            var cabinet = await _cabinetRepository.GetAll().FirstOrDefaultAsync(x => x.Id == model.Id);
+            if (cabinet == null)
+            {
+                return new BaseResponse<Cabinet>()
+                {
+                    Description = "Cabinet not found",
+                };
+            }
+
+            cabinet.Number = model.Number;
+
+            await _cabinetRepository.Update(cabinet);
+
+            return new BaseResponse<Cabinet>()
+            {
+                Data = cabinet,
+                StatusCode = StatusCode.OK,
+            };
+        }
+        catch (Exception ex)
+        {
+            return new BaseResponse<Cabinet>()
+            {
+                Description = $"[Edit] : {ex.Message}",
+            };
+        }
+    }
+
+    public async Task<IBaseResponse<bool>> Delete(int id)
+    {
+        try
+        {
+            var cabinet = await _cabinetRepository.GetAll().FirstOrDefaultAsync(x => x.Id == id);
+
+            if (cabinet == null)
+            {
+                return new BaseResponse<bool>()
+                {
+                    Description = "Car not found",
+                    Data = false
+                };
+            }
+            await _cabinetRepository.Delete(cabinet);
+
+            return new BaseResponse<bool>()
+            {
+                Data = true,
+                StatusCode = StatusCode.OK
+            };
+        }
+        catch (Exception ex)
+        {
+            return new BaseResponse<bool>()
+            {
+                Description = $"[DeleteCar] : {ex.Message}",
             };
         }
     }

@@ -1,53 +1,45 @@
-.App {
+body {
+  font-family: Arial, sans-serif;
+}
+nav ul {
+  list-style-type: none;
+  padding: 0;
+  background-color: #333;
+  overflow: hidden;
+  margin: 0;
+}
+nav ul li {
+  float: left;
+}
+nav ul li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+nav ul li a:hover {
+  background-color: #111;
+}
+.container {
+  padding: 20px;
+}
+
+
+
+
+
+/* .schedule-table {
+  width: 100%;
+  border-collapse: collapse;
   text-align: center;
 }
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.schedule-table th, .schedule-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
 }
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.schedule-table th {
+  background-color: #f2f2f2;
+  color: black;
 }
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-
-*{
-  margin: 0;
-  padding: 0;
-}
-
-.lesson-slot{
-  display: flex;
-  flex-direction: column;
-  gap: .25rem;
-  border: 1px white solid;
-  width: 260px;
-  padding: 10px;
-}
+ */

@@ -1,4 +1,5 @@
-﻿using AutoSchedule.Domain.DTOs;
+﻿using AutoSchedule.BLL.CRUD.Slots;
+using AutoSchedule.Domain.DTOs;
 
 namespace AutoSchedule.BLL.Logic;
 

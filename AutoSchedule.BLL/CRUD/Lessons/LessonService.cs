@@ -21,6 +21,7 @@ public class LessonService(IBaseRepository<Lesson> subjectRepository) : ILessonS
                 SubjectId = model.SubjectId,
                 TeacherId = model.TeacherId,
                 Time = model.Time,
+                DayOfWeek = model.DayOfWeek,
             };
             await _subjectRepository.Create(slot);
 
@@ -100,5 +101,34 @@ public class LessonService(IBaseRepository<Lesson> subjectRepository) : ILessonS
         }
     }
 
+    public async Task<IBaseResponse<IQueryable<Lesson>>> GetBySquadId(int squadId)
+    {
+        try
+        {
+            var subjects = _subjectRepository.GetAll().Where(x => x.SquadId == squadId);
+
+            if (!subjects.Any())
+            {
+                return new BaseResponse<IQueryable<Lesson>>()
+                {
+                    Description = "Найдено 0 элементов",
+                    StatusCode = StatusCode.OK
+                };
+            }
+
+            return new BaseResponse<IQueryable<Lesson>>()
+            {
+                Data = subjects,
+                StatusCode = StatusCode.OK
+            };
+        }
+        catch (Exception ex)
+        {
+            return new BaseResponse<IQueryable<Lesson>>()
+            {
+                Description = $"[GetCars] : {ex.Message}",
+            };
+        }
+    }
 
 }

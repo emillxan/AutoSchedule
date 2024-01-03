@@ -1,12 +1,12 @@
 function Slot(lesson, index) {
   
-    console.log(lesson.lesson.cabinet.number);
+    console.log(lesson.lesson);
     return (
-      <div className="lesson-slot">
+      <td className="lesson-slot">
         <p>{lesson.lesson.subject.name}</p>
         <p>{lesson.lesson.cabinet.number}</p>
         <p>{lesson.lesson.teacher.name}</p>
-      </div>
+      </td>
     );
   }
   
