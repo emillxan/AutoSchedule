@@ -1,4 +1,5 @@
 ﻿using AutoSchedule.Domain.Entities;
+using AutoSchedule.Domain.Enums;
 
 namespace AutoSchedule.Domain.DTOs;
 
@@ -11,4 +12,5 @@ public class LessonDTO
     public Teacher Teacher { get; set; }
     public DateTime Time { get; set; }
     public DayOfWeek DayOfWeek { get; set; }
+    public WeekType WeekType {  get; set; } 
 }

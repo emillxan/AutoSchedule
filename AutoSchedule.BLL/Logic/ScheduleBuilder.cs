@@ -2,6 +2,7 @@
 using AutoSchedule.BLL.CRUD.Slots;
 using AutoSchedule.Domain.DTOs;
 using AutoSchedule.Domain.Entities;
+using AutoSchedule.Domain.Enums;
 
 namespace AutoSchedule.BLL.Logic;
 
@@ -67,6 +68,11 @@ public class ScheduleBuilder(IBaseService<Cabinet> cabinetRepository,
         return result;
     }
 
+    private WeekType GetWeekType(int weekNumber)
+    {
+        return weekNumber % 2 == 0 ? WeekType.UpperWeek : WeekType.LowerWeek;
+    }
+
     public Schedule GenerateWeeklySchedule()
     {
         var schedule = new Schedule();
@@ -75,59 +81,67 @@ public class ScheduleBuilder(IBaseService<Cabinet> cabinetRepository,
 
         foreach (var squad in squads)
         {
-            subjectWeeklyCount.Clear();
-
-            for (int day = 0; day < 5; day++) // Пять учебных дней
+            for (int week = 0; week < 2; week++) // Две недели: верхняя и нижняя
             {
-                DateTime currentDate = startOfWeek.AddDays(day);
-                DayOfWeek currentDayOfWeek = currentDate.DayOfWeek;
+                subjectWeeklyCount.Clear();
 
                 foreach (var subjectId in squad.SubjectIds)
                 {
-                    if (!subjectWeeklyCount.ContainsKey(subjectId))
-                    {
-                        subjectWeeklyCount[subjectId] = 0;
-                    }
-
                     var subject = subjects.FirstOrDefault(s => s.Id == subjectId);
-                    if (subject == null || subjectWeeklyCount[subjectId] >= subject.WeeklyFrequency)
-                    {
-                        continue;
-                    }
+                    if (subject == null) continue;
 
-                    int lessonCount = 0;
-                    while (lessonCount < ScheduleConstants.MaxLessonsPerDay)
-                    {
-                        var lessonTime = CalculateLessonTime(lessonCount, currentDate);
-                        var availableCabinet = FindAvailableCabinet(cabinets, lessonTime, schedule);
-                        var availableTeacher = FindAvailableTeacher(teachers, subject, lessonTime, schedule);
+                    int totalPairs = (int)Math.Ceiling((double)subject.TotalHours / 2);
+                    int pairsPerWeek = totalPairs / 15;
+                    int additionalPairs = totalPairs % 15;
 
-                        if (availableTeacher != null && availableCabinet != null)
+                    WeekType weekType = GetWeekType(week);
+                    int pairsThisWeek = weekType == WeekType.UpperWeek ? pairsPerWeek : pairsPerWeek + (additionalPairs > 0 ? 1 : 0);
+
+                    subjectWeeklyCount[subjectId] = 0; // Сброс счетчика уроков для предмета на новой неделе
+
+                    for (int day = 0; day < 5; day++) // Пять учебных дней
+                    {
+                        DateTime currentDate = startOfWeek.AddDays(week * 7 + day);
+                        int lessonCount = 0;
+                        while (subjectWeeklyCount[subjectId] < pairsThisWeek && lessonCount < ScheduleConstants.MaxLessonsPerDay)
                         {
-                            var lesson = new LessonDTO
-                            {
-                                Subject = subject,
-                                Teacher = availableTeacher,
-                                Cabinet = availableCabinet,
-                                Squad = squad,
-                                Time = lessonTime,
-                                DayOfWeek = currentDayOfWeek
-                            };
+                            var lessonTime = CalculateLessonTime(lessonCount, currentDate);
+                            var availableCabinet = FindAvailableCabinet(cabinets, lessonTime, schedule);
+                            var availableTeacher = FindAvailableTeacher(teachers, subject, lessonTime, schedule);
 
-                            if (schedule.AddLesson(lesson))
+                            if (availableTeacher != null && availableCabinet != null)
                             {
-                                subjectWeeklyCount[subjectId]++;
-                                break; // Урок добавлен, переходим к следующему предмету
+                                var lesson = new LessonDTO
+                                {
+                                    Subject = subject,
+                                    Teacher = availableTeacher,
+                                    Cabinet = availableCabinet,
+                                    Squad = squad,
+                                    Time = lessonTime,
+                                    DayOfWeek = currentDate.DayOfWeek,
+                                    WeekType = weekType
+                                };
+
+                                if (schedule.AddLesson(lesson))
+                                {
+                                    subjectWeeklyCount[subjectId]++;
+                                    break;
+                                }
                             }
+                            lessonCount++;
                         }
-                        lessonCount++;
                     }
                 }
             }
+            startOfWeek = startOfWeek.AddDays(7); // Переход к следующей учебной неделе
         }
 
         return schedule;
+
+
     }
+
+
 
 
     public static DateTime GetMondayOfCurrentWeek()

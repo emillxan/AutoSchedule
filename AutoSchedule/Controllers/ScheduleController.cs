@@ -9,6 +9,8 @@ namespace AutoSchedule.Controllers;
 public class ScheduleController(IScheduleBuilder scheduleBuilder) : Controller
 {
     private readonly IScheduleBuilder _scheduleBuilder = scheduleBuilder;
+
+
     [HttpGet]
     public IActionResult GetTest()
     {
@@ -16,6 +18,4 @@ public class ScheduleController(IScheduleBuilder scheduleBuilder) : Controller
         var result = _scheduleBuilder.StartR();
         return Ok(result);
     }
-
-
 }

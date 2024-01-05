@@ -22,6 +22,7 @@ public class LessonService(IBaseRepository<Lesson> subjectRepository) : ILessonS
                 TeacherId = model.TeacherId,
                 Time = model.Time,
                 DayOfWeek = model.DayOfWeek,
+                WeekType = model.WeekType,
             };
             await _subjectRepository.Create(slot);
 

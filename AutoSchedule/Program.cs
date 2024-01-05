@@ -1,11 +1,8 @@
-using AutoSchedule.BLL.CRUD;
-using AutoSchedule.BLL.CRUD.Cabinets;
-using AutoSchedule.BLL.CRUD.Slots;
-using AutoSchedule.BLL.CRUD.Squads;
-using AutoSchedule.BLL.CRUD.Subjects;
-using AutoSchedule.BLL.CRUD.Teachers;
-using AutoSchedule.BLL.DTOs.Lessons;
+using AutoSchedule;
+using AutoSchedule.BLL.Interfaces;
 using AutoSchedule.BLL.Logic;
+using AutoSchedule.BLL.Mappings;
+using AutoSchedule.BLL.Services;
 using AutoSchedule.DAL;
 using AutoSchedule.DAL.Interface;
 using AutoSchedule.DAL.Repositories;
@@ -13,6 +10,8 @@ using AutoSchedule.Domain.DTOs;
 using AutoSchedule.Domain.Entities;
 using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,47 +20,51 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.InitializeRepositories();
+builder.Services.InitializeServices();
+builder.Services.AddAutoMapper(typeof(MappingProfile));
+
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Title = "My API",
+        Version = "v1",
+        Description = "Описание API"
+    });
+    var xmlFile = $"{Assembly.GetEntryAssembly().GetName().Name}.xml";
+    var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+    c.IncludeXmlComments(xmlPath);
+});
+
+builder.Services.AddLogging(builder =>
+{
+    builder.AddConsole();
+    builder.AddDebug();
+});
 
 
 
-builder.Services.AddScoped<IBaseRepository<Squad>, SquadRepository>();
-builder.Services.AddScoped<IBaseRepository<Cabinet>, CabinetRepository>();
-builder.Services.AddScoped<IBaseRepository<Subject>, SubjectRepository>();
-builder.Services.AddScoped<IBaseRepository<Teacher>, TeacherRepository>();
-builder.Services.AddScoped<IBaseRepository<Lesson>, LessonRepository>();
+/*builder.Services.AddScoped<ILessonService, LessonService>();
+builder.Services.AddScoped<ILessonDTOService, LessonDTOService>();*/
 
-
-builder.Services.AddScoped<IBaseService<Squad>, SquadService>();
-builder.Services.AddScoped<ISquadService, SquadService>();
-builder.Services.AddScoped<IBaseService<Subject>, SubjectService>();
-builder.Services.AddScoped<ISubjectService, SubjectService>();
-builder.Services.AddScoped<IBaseService<Teacher>, TeacherService>();
-builder.Services.AddScoped<ITeacherService, TeacherService>();
-builder.Services.AddScoped<IBaseService<Cabinet>, CabinetService>();
-builder.Services.AddScoped<ICabinetService, CabinetService>();
-builder.Services.AddScoped<ILessonService, LessonService>();
-builder.Services.AddScoped<ILessonDTOService, LessonDTOService>();
-
-
-builder.Services.AddScoped<IScheduleBuilder, ScheduleBuilder>();
+/*
+builder.Services.AddScoped<IScheduleBuilder, ScheduleBuilder>();*/
 
 
 builder.Services.AddCors();
 
 var app = builder.Build();
 
-
-if (app.Environment.IsDevelopment())
+app.UseSwagger();
+app.UseSwaggerUI(x =>
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+    x.SwaggerEndpoint("/swagger/v1/swagger.json", "Auto Schedule API V1");
+});
 
 app.UseHttpsRedirection();
 
 app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:3000"));
-
 
 app.UseAuthorization();
 

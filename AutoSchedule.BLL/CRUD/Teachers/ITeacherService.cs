@@ -1,4 +1,4 @@
-﻿using AutoSchedule.Domain.DTOs.Teachers;
+﻿/*using AutoSchedule.Domain.DTOs.Teachers;
 using AutoSchedule.Domain.Entities;
 using AutoSchedule.Domain.Responce;
 
@@ -8,3 +8,4 @@ public interface ITeacherService : IBaseService<Teacher>
 {
     Task<IBaseResponse<Teacher>> Create(CreateTeacherDTO model);
 }
+*/

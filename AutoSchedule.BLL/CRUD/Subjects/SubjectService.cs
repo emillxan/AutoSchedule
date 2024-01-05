@@ -1,4 +1,4 @@
-﻿using AutoSchedule.DAL.Interface;
+﻿/*using AutoSchedule.DAL.Interface;
 using AutoSchedule.Domain.DTOs.Subjects;
 using AutoSchedule.Domain.Entities;
 using AutoSchedule.Domain.Enums;
@@ -162,3 +162,4 @@ public class SubjectService(IBaseRepository<Subject> subjectRepository) : ISubje
         }
     }
 }
+*/

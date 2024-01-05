@@ -1,4 +1,4 @@
-﻿using AutoSchedule.BLL.CRUD.Cabinets;
+﻿/*using AutoSchedule.BLL.CRUD.Cabinets;
 using AutoSchedule.Domain.DTOs.Cabinets;
 using AutoSchedule.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
@@ -66,3 +66,4 @@ public class CabinetController(ICabinetService cabinetService) : Controller
         return BadRequest();
     }
 }
+*/

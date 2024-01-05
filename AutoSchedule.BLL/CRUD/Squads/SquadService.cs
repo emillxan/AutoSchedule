@@ -1,4 +1,4 @@
-﻿using AutoSchedule.BLL.CRUD.Squads;
+﻿/*using AutoSchedule.BLL.CRUD.Squads;
 using AutoSchedule.DAL.Interface;
 using AutoSchedule.Domain.DTOs.Squads;
 using AutoSchedule.Domain.Entities;
@@ -163,3 +163,4 @@ public class SquadService(IBaseRepository<Squad> squadRepository) : ISquadServic
         }
     }
 }
+*/

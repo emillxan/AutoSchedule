@@ -9,4 +9,5 @@ public class Lesson
     public int TeacherId { get; set; }
     public DateTime Time { get; set; }
     public DayOfWeek DayOfWeek { get; set; }
+    public int WeekType { get; set; }
 }

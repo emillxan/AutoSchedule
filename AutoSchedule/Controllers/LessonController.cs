@@ -1,4 +1,4 @@
-﻿using AutoSchedule.BLL.CRUD.Slots;
+﻿/*using AutoSchedule.BLL.CRUD.Slots;
 using AutoSchedule.BLL.DTOs.Lessons;
 using AutoSchedule.Domain.DTOs;
 using Microsoft.AspNetCore.Mvc;
@@ -30,3 +30,4 @@ public class LessonController(ILessonService lessonService,
         return Ok(list);
     }
 }
+*/

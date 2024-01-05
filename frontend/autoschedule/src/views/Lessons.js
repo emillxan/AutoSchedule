@@ -19,58 +19,93 @@ function Lessons() {
     };
 
     // Уникальные времена
-    const uniqueTimes = [...new Set(lessons.map(lesson => new Date(lesson.time).toLocaleTimeString()))];
+    const uniqueTimes = [...new Set(lessons.map(lesson => new Date(lesson.time).toLocaleTimeString()))].sort();
 
-    // Дни недели (только рабочие дни)
+    // Дни недели
     const daysOfWeek = ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница'];
 
-    // Группировка уроков по дням недели и времени
-    const lessonsByDayAndTime = lessons.reduce((acc, lesson) => {
-        const dayIndex = new Date(lesson.time).getDay();
-        const time = new Date(lesson.time).toLocaleTimeString();
+    // Функция для проверки идентичности уроков
+    const areLessonsIdentical = (lesson1, lesson2) => {
+        return lesson1.subject.name === lesson2.subject.name &&
+               lesson1.teacher.name === lesson2.teacher.name &&
+               lesson1.cabinet.number === lesson2.cabinet.number;
+    };
 
-        if (dayIndex === 0 || dayIndex === 6) {
-            // Пропускаем воскресенье (0) и субботу (6)
-            return acc;
-        }
+    // Функция для отрисовки урока в ячейке
+   // Остальной код компонента...
 
-        if (!acc[dayIndex]) {
-            acc[dayIndex] = {};
+const renderLessonCell = (lessonsForTimeSlot, dayIndex) => {
+    // Если нет уроков в слоте, возвращаем пустое пространство
+    if (lessonsForTimeSlot.length === 0) {
+        return '—';
+    }
+
+    // Если есть только один урок в слоте
+    if (lessonsForTimeSlot.length === 1) {
+        const lesson = lessonsForTimeSlot[0];
+        const content = renderLessonDetails(lesson);
+        
+        // Если урок принадлежит к верхней неделе (weekType === 0)
+        if (lesson.weekType === 0) {
+            return (
+                <div className="lesson-slot">
+                    {content}
+                    <hr className="divider" />
+                    <div className="empty-lesson-slot"></div>
+                </div>
+            );
+        } else { // Если урок принадлежит к нижней неделе (weekType === 1)
+            return (
+                <div className="lesson-slot">
+                    <div className="empty-lesson-slot"></div>
+                    <hr className="divider" />
+                    {content}
+                </div>
+            );
         }
-        if (!acc[dayIndex][time]) {
-            acc[dayIndex][time] = [];
+    } else {
+        // Если в слоте более одного урока, нужно проверить, одинаковы ли они
+        const [firstLesson, secondLesson] = lessonsForTimeSlot;
+        const firstContent = renderLessonDetails(firstLesson);
+        const secondContent = renderLessonDetails(secondLesson);
+
+        // Если уроки одинаковы, отображаем только один
+        if (areLessonsIdentical(firstLesson, secondLesson)) {
+            return firstContent;
+        } else {
+            // Если уроки разные, отображаем оба с разделительной линией
+            return (
+                <div className="lesson-slot">
+                    {firstContent}
+                    <hr className="divider" />
+                    {secondContent}
+                </div>
+            );
         }
-        acc[dayIndex][time].push(lesson);
-        return acc;
-    }, {});
+    }
+};
+const renderLessonDetails = (lesson) => {
+    // Проверяем, что объект урока определен и содержит необходимые данные
+    if (!lesson || !lesson.subject || !lesson.teacher || !lesson.cabinet) {
+        return null; // Возвращаем null, если данных недостаточно для отображения
+    }
+
+    // Возвращаем JSX с информацией об уроке
+    return (
+        <div className="lesson-details">
+            <p>Предмет: {lesson.subject.name}</p>
+            <p>Преподаватель: {lesson.teacher.name}</p>
+            <p>Кабинет: {lesson.cabinet.number}</p>
+        </div>
+    );
+};
+
+
+// Остальной код компонента...
 
     return (
-        <div>
+        <div className="container">
             <h2>Уроки для группы {squadId}</h2>
-            <style>
-                {`
-                    table {
-                        width: 100%;
-                        border-collapse: collapse;
-                        margin-top: 20px;
-                    }
-                    th, td {
-                        border: 1px solid #ddd;
-                        padding: 8px;
-                        text-align: left;
-                    }
-                    th {
-                        background-color: #4CAF50;
-                        color: white;
-                    }
-                    tr:nth-child(even) {
-                        background-color: #f2f2f2;
-                    }
-                    tr:hover {
-                        background-color: #ddd;
-                    }
-                `}
-            </style>
             <table>
                 <thead>
                     <tr>
@@ -79,22 +114,20 @@ function Lessons() {
                     </tr>
                 </thead>
                 <tbody>
-                    {daysOfWeek.map((day, index) => (
+                    {daysOfWeek.map((day, dayIndex) => (
                         <tr key={day}>
                             <td>{day}</td>
-                            {uniqueTimes.map(time => (
-                                <td key={time}>
-                                    {lessonsByDayAndTime[index + 1] && lessonsByDayAndTime[index + 1][time]
-                                        ? lessonsByDayAndTime[index + 1][time].map((lesson, idx) => (
-                                            <div key={idx}>
-                                                <p>Предмет: {lesson.subject.name}</p>
-                                                <p>Преподаватель: {lesson.teacher.name}</p>
-                                                <p>Кабинет: {lesson.cabinet.number}</p>
-                                            </div>
-                                        ))
-                                        : '—'}
-                                </td>
-                            ))}
+                            {uniqueTimes.map(time => {
+                                const lessonsForTimeSlot = lessons.filter(lesson => 
+                                    new Date(lesson.time).toLocaleTimeString() === time && 
+                                    lesson.dayOfWeek === dayIndex + 1
+                                );
+                                return (
+                                    <td key={time}>
+                                        {renderLessonCell(lessonsForTimeSlot, dayIndex)}
+                                    </td>
+                                );
+                            })}
                         </tr>
                     ))}
                 </tbody>

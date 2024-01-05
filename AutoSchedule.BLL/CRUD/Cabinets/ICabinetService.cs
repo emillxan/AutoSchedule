@@ -1,4 +1,4 @@
-﻿using AutoSchedule.Domain.DTOs.Cabinets;
+﻿/*using AutoSchedule.Domain.DTOs.Cabinets;
 using AutoSchedule.Domain.Entities;
 using AutoSchedule.Domain.Responce;
 
@@ -8,3 +8,4 @@ public interface ICabinetService : IBaseService<Cabinet>
 {
     Task<IBaseResponse<Cabinet>> Create(CreateCabinetDTO model);
 }
+*/

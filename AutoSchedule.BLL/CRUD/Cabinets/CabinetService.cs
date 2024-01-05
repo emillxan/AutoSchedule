@@ -1,4 +1,4 @@
-﻿using AutoSchedule.DAL.Interface;
+﻿/*using AutoSchedule.DAL.Interface;
 using AutoSchedule.DAL.Repositories;
 using AutoSchedule.Domain.DTOs.Cabinets;
 using AutoSchedule.Domain.Entities;
@@ -161,3 +161,4 @@ public class CabinetService(IBaseRepository<Cabinet> cabinetRepository) : ICabin
         }
     }
 }
+*/

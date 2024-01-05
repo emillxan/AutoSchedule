@@ -1,8 +1,6 @@
 ﻿using AutoSchedule.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
-using static System.Runtime.InteropServices.JavaScript.JSType;
-using System.Data;
-using AutoSchedule.Domain.DTOs;
+using AutoSchedule.DAL.Configurations;
 
 namespace AutoSchedule.DAL;
 
@@ -19,27 +17,12 @@ public class AppDbContext : DbContext
     public DbSet<Subject> Subject { get; set; }
     public DbSet<Teacher> Teacher { get; set; }
     public DbSet<Lesson> Lesson { get; set; }
+    public DbSet<Faculty> Faculty { get; set; }
+    public DbSet<Department> Department { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Squad>(builder =>
-        {
-            builder.ToTable("Squad").HasKey(x => x.Id);
-
-            builder.HasData([
-                new Squad { Id = 1, Number = "2450r", SubjectIds = [1,2] },
-                new Squad { Id = 2, Number = "1451r", SubjectIds = [1,3] },
-                new Squad { Id = 3, Number = "2440r", SubjectIds = [5,6,7] },
-/*                new Squad { Id = 4, Number = "2450a" },
-                new Squad { Id = 5, Number = "2430a" },
-                new Squad { Id = 6, Number = "1452i" },
-                new Squad { Id = 7, Number = "1450i" },
-                new Squad { Id = 8, Number = "2440r" },*/
-            ]);
-
-            builder.Property(x => x.Id).ValueGeneratedOnAdd();
-            builder.Property(x => x.Number).HasMaxLength(25).IsRequired();
-        });
+        modelBuilder.ApplyConfiguration(new SquadConfiguration());
 
         modelBuilder.Entity<Cabinet>(builder =>
         {
@@ -67,22 +50,22 @@ public class AppDbContext : DbContext
             builder.ToTable("Subject").HasKey(x => x.Id);
 
             builder.HasData([
-                new Subject { Id = 1, Name = "OOP", WeeklyFrequency = 3},
-                new Subject { Id = 2, Name = "English", WeeklyFrequency = 2 },
-                new Subject { Id = 3, Name = "WEB", WeeklyFrequency = 1 },
-                new Subject { Id = 4, Name = "Economy", WeeklyFrequency = 2 },
-                new Subject { Id = 5, Name = "ASKP", WeeklyFrequency = 3 },
-                new Subject { Id = 6, Name = "Fizik", WeeklyFrequency = 2 },
-                new Subject { Id = 7, Name = "E-Comers", WeeklyFrequency = 1 },
-                new Subject { Id = 8, Name = "Phylosofi", WeeklyFrequency = 2 },
-                new Subject { Id = 9, Name = "C#", WeeklyFrequency = 1 },
-                new Subject { Id = 10, Name = "KiberSecurity", WeeklyFrequency = 2 },
-                new Subject { Id = 11, Name = "C++", WeeklyFrequency = 1 },
-                new Subject { Id = 12, Name = "Python", WeeklyFrequency = 2 },
-                new Subject { Id = 13, Name = "Math", WeeklyFrequency = 1 },
-                new Subject { Id = 14, Name = "Chemistry", WeeklyFrequency = 2 },
-                new Subject { Id = 15, Name = "DB", WeeklyFrequency = 3 },
-                new Subject { Id = 16, Name = "An Math", WeeklyFrequency = 3 },
+                new Subject { Id = 1, Name = "OOP", WeeklyFrequency = 3, TotalHours = 75 },
+                new Subject { Id = 2, Name = "English", WeeklyFrequency = 2, TotalHours = 60 },
+                new Subject { Id = 3, Name = "WEB", WeeklyFrequency = 1, TotalHours = 60 },
+                new Subject { Id = 4, Name = "Economy", WeeklyFrequency = 2, TotalHours = 60 },
+                new Subject { Id = 5, Name = "ASKP", WeeklyFrequency = 3, TotalHours = 60 },
+                new Subject { Id = 6, Name = "Fizik", WeeklyFrequency = 2, TotalHours = 60 },
+                new Subject { Id = 7, Name = "E-Comers", WeeklyFrequency = 1, TotalHours = 60 },
+                new Subject { Id = 8, Name = "Phylosofi", WeeklyFrequency = 2, TotalHours = 60 },
+                new Subject { Id = 9, Name = "C#", WeeklyFrequency = 1, TotalHours = 60 },
+                new Subject { Id = 10, Name = "KiberSecurity", WeeklyFrequency = 2, TotalHours = 60 },
+                new Subject { Id = 11, Name = "C++", WeeklyFrequency = 1, TotalHours = 60 },
+                new Subject { Id = 12, Name = "Python", WeeklyFrequency = 2, TotalHours = 60 },
+                new Subject { Id = 13, Name = "Math", WeeklyFrequency = 1, TotalHours = 60 },
+                new Subject { Id = 14, Name = "Chemistry", WeeklyFrequency = 2, TotalHours = 60 },
+                new Subject { Id = 15, Name = "DB", WeeklyFrequency = 3, TotalHours = 60 },
+                new Subject { Id = 16, Name = "An Math", WeeklyFrequency = 3, TotalHours = 60 },
             ]);
 
             builder.Property(x => x.Id).ValueGeneratedOnAdd();
@@ -103,6 +86,13 @@ public class AppDbContext : DbContext
             ]);
 
             builder.Property(x => x.Id).ValueGeneratedOnAdd();
+        });
+
+        modelBuilder.Entity<Department>(builder =>
+        {
+            builder.HasOne(d => d.Faculty)  
+            .WithMany(f => f.Departments)  
+            .HasForeignKey(d => d.FacultyId);
         });
     }
 }

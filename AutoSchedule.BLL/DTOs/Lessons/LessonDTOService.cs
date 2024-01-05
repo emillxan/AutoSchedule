@@ -50,6 +50,7 @@ public class LessonDTOService : ILessonDTOService
                 Teacher = teacher,
                 Time = Lesson.Time,
                 DayOfWeek = Lesson.DayOfWeek,
+                WeekType = Lesson.WeekType == 0 ? WeekType.UpperWeek : WeekType.LowerWeek,
             };
 
             return new BaseResponse<LessonDTO>()

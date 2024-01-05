@@ -1,4 +1,4 @@
-﻿using AutoSchedule.Domain.DTOs.Squads;
+﻿/*using AutoSchedule.Domain.DTOs.Squads;
 using AutoSchedule.Domain.Entities;
 using AutoSchedule.Domain.Responce;
 
@@ -8,3 +8,4 @@ public interface ISquadService : IBaseService<Squad>
 {
     Task<IBaseResponse<Squad>> Create(CreateSquadDTO model);
 }
+*/

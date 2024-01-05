@@ -1,6 +1,8 @@
 body {
   font-family: Arial, sans-serif;
 }
+
+/* Навигация */
 nav ul {
   list-style-type: none;
   padding: 0;
@@ -8,9 +10,11 @@ nav ul {
   overflow: hidden;
   margin: 0;
 }
+
 nav ul li {
   float: left;
 }
+
 nav ul li a {
   display: block;
   color: white;
@@ -18,28 +22,53 @@ nav ul li a {
   padding: 14px 16px;
   text-decoration: none;
 }
+
 nav ul li a:hover {
   background-color: #111;
 }
+
+/* Общий контейнер для контента */
 .container {
   padding: 20px;
 }
 
-
-
-
-
-/* .schedule-table {
+/* Стили для таблицы */
+table {
   width: 100%;
   border-collapse: collapse;
-  text-align: center;
 }
-.schedule-table th, .schedule-table td {
+
+th, td {
   border: 1px solid #ddd;
   padding: 8px;
+  text-align: left;
 }
-.schedule-table th {
+
+th {
+  background-color: #4CAF50;
+  color: white;
+}
+
+tr:nth-child(even) {
   background-color: #f2f2f2;
-  color: black;
 }
- */
+
+tr:hover {
+  background-color: #ddd;
+}
+
+/* Стили для деталей урока */
+.lesson-details {
+  margin-bottom: 10px; /* Пример отступа снизу */
+}
+
+/* Стили для пустого слота урока */
+.empty-lesson-slot {
+  height: 50px; /* Пример высоты пустого слота */
+}
+
+/* Стили для разделителя */
+.divider {
+  border-top: 1px solid #ccc;
+  margin: 4px 0;
+}

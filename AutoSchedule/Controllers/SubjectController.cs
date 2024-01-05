@@ -1,4 +1,4 @@
-﻿using AutoSchedule.BLL.CRUD.Subjects;
+﻿/*using AutoSchedule.BLL.CRUD.Subjects;
 using AutoSchedule.Domain.DTOs.Squads;
 using AutoSchedule.Domain.DTOs.Subjects;
 using AutoSchedule.Domain.Entities;
@@ -67,3 +67,4 @@ public class SubjectController(ISubjectService subjectService) : Controller
         return BadRequest();
     }
 }
+*/

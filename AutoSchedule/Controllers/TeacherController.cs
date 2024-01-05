@@ -1,4 +1,4 @@
-﻿using AutoSchedule.BLL.CRUD.Teachers;
+﻿/*using AutoSchedule.BLL.CRUD.Teachers;
 using AutoSchedule.Domain.DTOs.Subjects;
 using AutoSchedule.Domain.DTOs.Teachers;
 using AutoSchedule.Domain.Entities;
@@ -67,3 +67,4 @@ public class TeacherController(ITeacherService teacherService) : Controller
         return BadRequest();
     }
 }
+*/
