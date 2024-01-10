@@ -1,6 +1,4 @@
 ﻿using AutoSchedule.BLL.DTOs.Faculties;
-using AutoSchedule.BLL.DTOs.Squads;
-using AutoSchedule.Domain.Entities;
 using AutoSchedule.Domain.Responce;
 
 namespace AutoSchedule.BLL.Interfaces;

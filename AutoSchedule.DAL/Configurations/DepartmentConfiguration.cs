@@ -23,5 +23,9 @@ public class DepartmentConfiguration : IEntityTypeConfiguration<Department>
         builder.HasMany(d => d.Squads)
             .WithOne(s => s.Department)
             .HasForeignKey(s => s.DepartmentId);
+
+        builder.HasMany(d => d.Teachers)
+            .WithOne(t => t.Department)
+            .HasForeignKey(t => t.DepartmentId);
     }
 }

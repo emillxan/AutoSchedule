@@ -2,7 +2,6 @@
 using AutoSchedule.BLL.DTOs.Squads;
 using AutoSchedule.BLL.Interfaces;
 using AutoSchedule.DAL.Interface;
-using AutoSchedule.DAL.Repositories;
 using AutoSchedule.Domain.Entities;
 using AutoSchedule.Domain.Enums;
 using AutoSchedule.Domain.Responce;

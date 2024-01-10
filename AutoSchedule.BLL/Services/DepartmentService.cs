@@ -1,19 +1,11 @@
 ﻿using AutoMapper;
 using AutoSchedule.BLL.DTOs.Departments;
-using AutoSchedule.BLL.DTOs.Faculties;
-using AutoSchedule.BLL.DTOs.Squads;
 using AutoSchedule.BLL.Interfaces;
 using AutoSchedule.DAL.Interface;
-using AutoSchedule.DAL.Repositories;
 using AutoSchedule.Domain.Entities;
 using AutoSchedule.Domain.Enums;
 using AutoSchedule.Domain.Responce;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AutoSchedule.BLL.Services;
 

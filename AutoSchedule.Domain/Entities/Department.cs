@@ -7,4 +7,5 @@ public class Department
     public int FacultyId { get; set; }
     public Faculty Faculty { get; set; }
     public ICollection<Squad> Squads { get; set; }
+    public ICollection<Teacher> Teachers { get; set; }
 }

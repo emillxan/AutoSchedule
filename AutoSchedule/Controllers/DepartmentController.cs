@@ -1,7 +1,5 @@
 ﻿using AutoSchedule.BLL.DTOs.Departments;
-using AutoSchedule.BLL.DTOs.Faculties;
 using AutoSchedule.BLL.Interfaces;
-using AutoSchedule.BLL.Services;
 using AutoSchedule.Domain.Responce;
 using Microsoft.AspNetCore.Mvc;
 
